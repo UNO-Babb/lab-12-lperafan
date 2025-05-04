@@ -23,32 +23,27 @@ def main():
   randomList = []
 
   for i in range(numberTerms):
-    orderedList.append(i)
-    reversedList.insert(0, i)
-    randomList.append(random.randint(1, 10000))
+      orderedList.append(i)
+      reversedList.insert(0, i)
+      randomList.append(random.randint(1, numberTerms))  # Ensuring random values are within a reasonable range
 
-  # Run each of the sorts in different python sessions.
-  # The sorts are bubbleSort, bubbleSortEarlyExit, selectionSort, insertionSort, and mergeSort
+  sorts = [
+      ("Bubble Sort", AllSorts.bubbleSort),
+      ("Bubble Sort (Early Exit)", AllSorts.bubbleSortEarlyExit),
+      ("Selection Sort", AllSorts.selectionSort),
+      ("Insertion Sort", AllSorts.insertionSort),
+      ("Merge Sort", AllSorts.mergeSort)
+    ]
 
-  print("Begin Sorting %d elements." % numberTerms)
+  print(f"Begin Sorting {numberTerms} elements.")
 
-  startTime = time.time()
-  AllSorts.bubbleSort(orderedList)
-  endTime = time.time()
-  elapsedTime = endTime - startTime
-  print("Ordered list time: %.5f seconds" % elapsedTime)
-
-  startTime = time.time()
-  AllSorts.bubbleSort(reversedList)
-  endTime = time.time()
-  elapsedTime = endTime - startTime
-  print("Reversed list time: %.5f seconds" % elapsedTime)
-
-  startTime = time.time()
-  AllSorts.bubbleSort(randomList)
-  endTime = time.time()
-  elapsedTime = endTime - startTime
-  print("Random list time: %.5f seconds" % elapsedTime)
+  for sort_name, sort_function in sorts:
+      for dataset_name, dataset in [("Ordered", orderedList), ("Reversed", reversedList), ("Random", randomList)]:
+          startTime = time.time()
+          sort_function(dataset.copy())  # Using `.copy()` to avoid modifying the original list
+          endTime = time.time()
+          elapsedTime = endTime - startTime
+          print(f"{sort_name} - {dataset_name} List time: {elapsedTime:.5f} seconds")
 
   print("Sorting Complete")
 
